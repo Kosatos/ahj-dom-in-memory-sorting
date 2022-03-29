@@ -39,19 +39,19 @@ function renderTable() {
     tr.remove();
   });
 
-  let headerTr = document.createElement('tr');
+  const headerTr = document.createElement('tr');
   header.forEach((item) => {
-    let headerTd = document.createElement('td');
+    const headerTd = document.createElement('td');
     headerTd.textContent = `${item}`;
     headerTr.appendChild(headerTd);
   });
   table.appendChild(headerTr);
 
   library.forEach((item) => {
-    let tr = document.createElement('tr');
+    const tr = document.createElement('tr');
     for (const prop in item) {
-      if (item.hasOwnProperty(prop)) {
-        let td = document.createElement('td');
+      if (Object.prototype.hasOwnProperty.call(item, prop)) {
+        const td = document.createElement('td');
         if (prop === 'year') {
           td.textContent = `(${item[prop]})`;
         } else if (prop === 'imdb') {
@@ -71,25 +71,23 @@ function addArrow(arrow, attr) {
   const cells = document.querySelectorAll('td');
   cells.forEach((cell) => {
     if (cell.textContent === attr) {
-      arrow === 'grow'
-        ? cell.insertAdjacentText('beforeend', ' ↓')
-        : cell.insertAdjacentText('beforeend', ' ↑');
+      if (arrow === 'grow') {
+        cell.insertAdjacentText('beforeend', ' ↓');
+      } else {
+        cell.insertAdjacentText('beforeend', ' ↑');
+      }
     }
   });
 }
 
 function sortNumbersGrow(attr) {
-  library.sort((obj1, obj2) => {
-    return obj1[attr] - obj2[attr];
-  });
+  library.sort((obj1, obj2) => obj1[attr] - obj2[attr]);
   renderTable();
   addArrow('grow', attr);
 }
 
 function sortNumbersDecrease(attr) {
-  library.sort((obj1, obj2) => {
-    return obj2[attr] - obj1[attr];
-  });
+  library.sort((obj1, obj2) => obj2[attr] - obj1[attr]);
   renderTable();
   addArrow('decrease', attr);
 }
